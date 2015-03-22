@@ -24,6 +24,13 @@ $(kernel): $(KOBJS)
 	@$(OBJDUMP) -S $@ > $(call asmfile,kernel)
 	@$(OBJDUMP) -t $@ | $(SED) '1,/SYMBOL TABLE/d; s/ .* / /; /^$$/d' > $(call symfile,kernel)
 ```
+
+其中kernel的生成依赖于kernel.ld以及$(KOBJS)
+
+而$(KOBJS)依赖于语句
+```
+KOBJS	= $(call read_packet,kernel libs)
+```
 - 对于bootblock的生成依赖于如下代码
 ```
 bootfiles = $(call listf_cc,boot)
