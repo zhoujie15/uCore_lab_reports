@@ -12,7 +12,7 @@ $(UCOREIMG): $(kernel) $(bootblock)
 $(call create_target,ucore.img)
 ```
 发现ucore.img的生成依赖于kernel和bootblock。
-- 对于kernel的生成依赖于如下代码
+## 对于kernel的生成依赖于如下代码
 ```
 kernel = $(call totarget,kernel)
 
@@ -52,7 +52,7 @@ gcc -Ikern/init/ -fno-builtin -Wall -ggdb -m32 \
 ```
 得到所有的.o文件后，通过ld命令得到最终的kernel.o
 
-- 对于bootblock的生成依赖于如下代码
+## 对于bootblock的生成依赖于如下代码
 ```
 bootfiles = $(call listf_cc,boot)
 $(foreach f,$(bootfiles),$(call cc_compile,$(f),$(CC),$(CFLAGS) -Os -nostdinc))
