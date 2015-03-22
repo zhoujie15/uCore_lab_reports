@@ -50,6 +50,8 @@ gcc -Ikern/init/ -fno-builtin -Wall -ggdb -m32 \
 	-Ikern/trap/ -Ikern/mm/ -c kern/init/init.c \
 	-o obj/kern/init/init.o
 ```
+得到所有的.o文件后，通过ld命令得到最终的kernel.o
+
 - 对于bootblock的生成依赖于如下代码
 ```
 bootfiles = $(call listf_cc,boot)
@@ -67,6 +69,10 @@ $(bootblock): $(call toobj,$(bootfiles)) | $(call totarget,sign)
 
 $(call create_target,bootblock)
 ```
+
+bootblack的生成需要bootasm.o bootmain.o和sign，
+
+分别对它们进行编译，得到bootblock。
 2. 通过观察tools/sign.c里面的代码可以得知，主要的特征为：
 
 
