@@ -36,6 +36,13 @@ KOBJS	= $(call read_packet,kernel libs)
 $(call add_files_cc,$(call listf_cc,$(KSRCDIR)),kernel,$(KCFLAGS))
 $(call add_files_cc,$(call listf_cc,$(LIBDIR)),libs,)
 ```
+这两条语句找到kern和libs中的.c文件并进行编译生成.o，主要有
+```
+init.o readline.o stdio.o kdebug.o
+kmonitor.o panic.o clock.o console.o intr.o picirq.o trap.o
+trapentry.o vectors.o pmm.o  printfmt.o string.o
+```
+它们的生成过程比较类似，举
 - 对于bootblock的生成依赖于如下代码
 ```
 bootfiles = $(call listf_cc,boot)
