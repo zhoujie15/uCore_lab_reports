@@ -1,5 +1,5 @@
 # 练习一
-1. 通过运行make V=和观察makefile文件得到ucore.img的生成过程。
+## 1. 通过运行make V=和观察makefile文件得到ucore.img的生成过程。
 
 ```
 UCOREIMG	:= $(call totarget,ucore.img)
@@ -12,7 +12,7 @@ $(UCOREIMG): $(kernel) $(bootblock)
 $(call create_target,ucore.img)
 ```
 发现ucore.img的生成依赖于kernel和bootblock。
-## 对于kernel的生成依赖于如下代码
+##### 对于kernel的生成依赖于如下代码
 ```
 kernel = $(call totarget,kernel)
 
@@ -52,7 +52,7 @@ gcc -Ikern/init/ -fno-builtin -Wall -ggdb -m32 \
 ```
 得到所有的.o文件后，通过ld命令得到最终的kernel.o
 
-## 对于bootblock的生成依赖于如下代码
+##### 对于bootblock的生成依赖于如下代码
 ```
 bootfiles = $(call listf_cc,boot)
 $(foreach f,$(bootfiles),$(call cc_compile,$(f),$(CC),$(CFLAGS) -Os -nostdinc))
@@ -73,7 +73,7 @@ $(call create_target,bootblock)
 bootblack的生成需要bootasm.o bootmain.o和sign，
 
 分别对它们进行编译，得到bootblock。
-2. 通过观察tools/sign.c里面的代码可以得知，主要的特征为：
+## 2. 通过观察tools/sign.c里面的代码可以得知，主要的特征为：
 
 
 - 大小为512字节
