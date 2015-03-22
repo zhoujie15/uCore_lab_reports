@@ -31,6 +31,11 @@ $(kernel): $(KOBJS)
 ```
 KOBJS	= $(call read_packet,kernel libs)
 ```
+其中kernel和libs又分别来自于
+```
+$(call add_files_cc,$(call listf_cc,$(KSRCDIR)),kernel,$(KCFLAGS))
+$(call add_files_cc,$(call listf_cc,$(LIBDIR)),libs,)
+```
 - 对于bootblock的生成依赖于如下代码
 ```
 bootfiles = $(call listf_cc,boot)
