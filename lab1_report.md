@@ -73,8 +73,8 @@ $(call create_target,bootblock)
 bootblack的生成需要bootasm.o bootmain.o和sign，
 
 分别对它们进行编译，得到bootblock。
-## 2. 通过观察tools/sign.c里面的代码可以得知，主要的特征为：
-
+## 2. 符合规范的硬盘主引导扇区的特征
+通过观察tools/sign.c里面的代码可以得知，主要的特征为：
 
 - 大小为512字节
 - 最后两位分别为0x55, 0xAA
