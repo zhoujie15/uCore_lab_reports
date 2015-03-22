@@ -23,7 +23,7 @@
 
 或者在q.log中观察0x7c00处的反汇编代码，
 
-发现其与bootasm.S和bootblock.asm中的代码相似。
+发现其与bootasm.S和bootblock.asm中的代码相同。
 
 ## 找一个bootloader或内核中的代码位置，设置断点并进行测试。
 
