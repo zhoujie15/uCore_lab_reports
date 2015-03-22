@@ -42,7 +42,14 @@ init.o readline.o stdio.o kdebug.o
 kmonitor.o panic.o clock.o console.o intr.o picirq.o trap.o
 trapentry.o vectors.o pmm.o  printfmt.o string.o
 ```
-它们的生成过程比较类似，举
+它们的生成过程比较类似，举init.o的生成为例。会调用如下代码
+```
+gcc -Ikern/init/ -fno-builtin -Wall -ggdb -m32 \
+	-gstabs -nostdinc  -fno-stack-protector \
+	-Ilibs/ -Ikern/debug/ -Ikern/driver/ \
+	-Ikern/trap/ -Ikern/mm/ -c kern/init/init.c \
+	-o obj/kern/init/init.o
+```
 - 对于bootblock的生成依赖于如下代码
 ```
 bootfiles = $(call listf_cc,boot)
