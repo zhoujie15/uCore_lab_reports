@@ -52,6 +52,17 @@ movl %eax, %cr0
 ```
 通过长跳转更新cs的基地址后设立段寄存器，建立堆栈
 ```
+ljmp $PROT_MODE_CSEG, $protcseg
+.code32
+protcseg:
+	movw $PROT_MODE_DSEG, %ax
+	movw %ax, %ds
+	movw %ax, %es
+	movw %ax, %fs
+	movw %ax, %gs
+	movw %ax, %ss
+	movl $0x0, %ebp
+	movl $start, %esp
 ```
  则转到保护模式完成，进入bootmain方法开始执行。
 ```
