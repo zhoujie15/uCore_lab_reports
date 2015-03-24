@@ -58,7 +58,7 @@ idt_init(void) {
 
 ## 问题三
 在对时钟中断的处理中设置计数器，满足100后调用print_ticks()函数即可，代码如下。
-‘’‘
+```
     case IRQ_OFFSET + IRQ_TIMER:
         /* LAB1 YOUR CODE : STEP 3 */
         /* handle the timer interrupt */
@@ -70,6 +70,6 @@ idt_init(void) {
         if (ticks % TICK_NUM == 0)
             print_ticks();
         break;
-’‘’
+```
 
 其中ticks是全局变量，这一问的实现比较简单。
