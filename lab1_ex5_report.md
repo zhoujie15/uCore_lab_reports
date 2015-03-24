@@ -42,6 +42,7 @@ print_stackframe(void) {
 ```
 
 主要执行步骤如下：
+
 1. 通过调用函数得到eip和ebp的值。
 2. 输出当前ebp和eip的值。
 3. 输出当前栈帧之上的四个参数。地址分别为ebp+8 ebp+12 ebp+16 ebp+20
