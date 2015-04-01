@@ -36,23 +36,23 @@ get_pte(pde_t *pgdir, uintptr_t la, bool create) {
 
 － 31-12 下一级索引地址
 
-－11－9 Available for software use
+－ 11-9 Available for software use
 
 － 8-7 Must be Zero，其中7为Page Size
 
-－6 Dirty
+－ 6 Dirty
 
-－5 Accessed
+－ 5 Accessed
 
-－4 Cache-Disable
+－ 4 Cache-Disable
 
-－3 Write-Through，是否采用写直达
+－ 3 Write-Through，是否采用写直达
 
-－2 User
+－ 2 User
 
-－1 Writeable，是否可写
+－ 1 Writeable，是否可写
 
-－0 Present，是否存在
+－ 0 Present，是否存在
 
 
 位0是存在（Present）标志，用于指明表项对地址转换是否有效。P=1表示有效；P=0表示无效。在页转换过程中，如果说涉及的页目录或页表的表项无效，则会导致一个异常。如果P=0，那么除表示表项无效外，其余位可供程序自由使用。
