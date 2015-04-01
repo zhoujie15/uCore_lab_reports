@@ -33,48 +33,27 @@ get_pte(pde_t *pgdir, uintptr_t la, bool create) {
 ### 请描述页目录项（Page Director Entry）和页表（Page Table Entry）中每个组成部分的含义和以及对ucore而言的潜在用处。
 查看mmu.h可以得到关于组成内容的宏定义。页目录项和页表项的组成部分如下
 
-{| cellspacing="0" border="1"
-|Bits
-|内容
-|-
-|31-12
-|下一级索引地址
-|
-|-
-|11－9
-|Available for software use
-|
-|-
-|8-7
-|Must be Zero，其中7为Page Size
-|
-|-
-|6
-|Dirty
-|
-|-
-|5
-|Accessed
-|
-|-
-|4
-|Cache-Disable
-|
-|-
-|3
-|Write-Through，是否采用写直达
-|
-|-
-|2
-|User
-|1
-|Writeable，是否可写
-|
-|-
-|0
-|Present，是否存在
-|
-|}
+
+－ 31-12 下一级索引地址
+
+－11－9 Available for software use
+
+－ 8-7 Must be Zero，其中7为Page Size
+
+－6 Dirty
+
+－5 Accessed
+
+－4 Cache-Disable
+
+－3 Write-Through，是否采用写直达
+
+－2 User
+
+－1 Writeable，是否可写
+
+－0 Present，是否存在
+
 
 位0是存在（Present）标志，用于指明表项对地址转换是否有效。P=1表示有效；P=0表示无效。在页转换过程中，如果说涉及的页目录或页表的表项无效，则会导致一个异常。如果P=0，那么除表示表项无效外，其余位可供程序自由使用。
 
