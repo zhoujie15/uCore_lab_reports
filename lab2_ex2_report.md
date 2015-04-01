@@ -31,8 +31,8 @@ get_pte(pde_t *pgdir, uintptr_t la, bool create) {
 即先从pdep指针中得到PTE的物理地址，然后访问PTE中la中index的位置并返回。
 
 ### 请描述页目录项（Page Director Entry）和页表（Page Table Entry）中每个组成部分的含义和以及对ucore而言的潜在用处。
-页目录项和页表项的组成部分如下
-{|
+查看mmu.h可以得到关于组成内容的宏定义。页目录项和页表项的组成部分如下
+{| cellspacing="0" border="1"
 |Bits
 |内容
 |-
@@ -85,6 +85,6 @@ get_pte(pde_t *pgdir, uintptr_t la, bool create) {
 
 位6是页面已被修改（Dirty）标志。当处理器对一个页面执行写操作时，就会设置对应页表表项的D标志。处理器并不会修改页目录项中的D标志。
 
-11-9位该字段保留专供程序使用。处理器不会修改这几位，以后的升级处理器也不会。
+11-9位该字段保留专供程序使用。
 
 ### 如果ucore执行过程中访问内存，出现了页访问异常，请问硬件要做哪些事情？
