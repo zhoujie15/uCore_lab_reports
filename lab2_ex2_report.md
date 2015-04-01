@@ -32,8 +32,8 @@ get_pte(pde_t *pgdir, uintptr_t la, bool create) {
 
 ### 请描述页目录项（Page Director Entry）和页表（Page Table Entry）中每个组成部分的含义和以及对ucore而言的潜在用处。
 页目录项和页表项的组成部分如下
-｜ Bits	｜ 内容				｜
-｜ 31-12	｜ 下一级索引地址			｜
+|| Bits	|| 内容				||
+|| 31-12	|| 下一级索引地址			||
 ｜ 11－9	｜ Available for software use	｜
 ｜ 8-7	｜ Must be Zero，其中7为Page Size	｜
 ｜ 6	｜ Dirty				｜
