@@ -32,6 +32,7 @@ get_pte(pde_t *pgdir, uintptr_t la, bool create) {
 
 ### 请描述页目录项（Page Director Entry）和页表（Page Table Entry）中每个组成部分的含义和以及对ucore而言的潜在用处。
 查看mmu.h可以得到关于组成内容的宏定义。页目录项和页表项的组成部分如下
+
 {| cellspacing="0" border="1"
 |Bits
 |内容
