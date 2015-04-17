@@ -23,3 +23,11 @@ do_pgfault
    ptep = get_pte(mm->pgdir, addr, 1);    if (*ptep == 0) {                            //(2) if the phy addr isn't exist, then alloc a page & map the phy addr with logical addr    	pgdir_alloc_page(mm->pgdir, addr, perm);    }    else {    /*LAB3 EXERCISE 2: 2012011394    * Now we think this pte is a  swap entry, we should load data from disk to a page with phy addr,    * and map the phy addr with logical addr, trigger swap manager to record the access situation of this page.    *    *  Some Useful MACROs and DEFINEs, you can use them in below implementation.    *  MACROs or Functions:    *    swap_in(mm, addr, &page) : alloc a memory page, then according to the swap entry in PTE for addr,    *                               find the addr of disk page, read the content of disk page into this memroy page    *    page_insert ： build the map of phy addr of an Page with the linear addr la    *    swap_map_swappable ： set the page swappable    */        if(swap_init_ok) {            struct Page *page=NULL;            swap_in(mm, addr, &page);            page_insert(mm->pgdir, page, addr, perm);            swap_map_swappable(mm, addr, page, 1);                                    //(1）According to the mm AND addr, try to load the content of right disk page                                    //    into the memory which page managed.                                    //(2) According to the mm, addr AND page, setup the map of phy addr <---> logical addr                                    //(3) make the page swappable.        }        else {            cprintf("no swap_init_ok but ptep is %x, failed\n",*ptep);            goto failed;        }
 ```
 在出现page fault时，如果当前页不为空，那么需要将该地址对应的页换出，将新的页换入；然后将页的物理地址和线性地址建立好映射，最后设置被换入的页可以被替换，则需要的操作完成。
+
+### 课后练习题
+
+可以支持在ucore中实现这个算法，因为ucore的表项中已经有了需要使用到的dirty位和accessed位来表示是否修改和访问。需要在swap_manager中维护一个页表项链表和时钟指针，进行算法的相关操作。
+
+- 需要被换出的页其表项的修改位和访问位都必须为0。 
+- 查找页表项中的accessed位和dirty位，都为0便可以换出。
+- 在发生了缺页异常，而且物理内存已经满了的情况下进行换入换出操作。
