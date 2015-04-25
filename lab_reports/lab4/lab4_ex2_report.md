@@ -19,3 +19,11 @@ intdo_fork(uint32_t clone_flags, uintptr_t stack, struct trapframe *tf) {    i
 实验中需要注意的是要记得对proc的parent变量进行赋值，以及在hash_proc调用前为进程分配进程号，因为在hash_proc中会用到；还应该注意到框架中包含了fork_out, bad_fork_cleanup_kstack和bad_fork_cleanup_proc三个分支，在前面三步失败时，要选择合适的分支返回退出。
 
 ## 思考题
+
+请说明ucore是否做到给每个新fork的线程一个唯一的id？请说明你的分析和理由。
+
+能够做到。在代码中的get_pid函数中进行了对于id的分配。
+
+```
+static intget_pid(void) {    static_assert(MAX_PID > MAX_PROCESS);    struct proc_struct *proc;    list_entry_t *list = &proc_list, *le;    static int next_safe = MAX_PID, last_pid = MAX_PID;    if (++ last_pid >= MAX_PID) {        last_pid = 1;        goto inside;    }    if (last_pid >= next_safe) {    inside:        next_safe = MAX_PID;    repeat:        le = list;        while ((le = list_next(le)) != list) {            proc = le2proc(le, list_link);            if (proc->pid == last_pid) {                if (++ last_pid >= next_safe) {                    if (last_pid >= MAX_PID) {                        last_pid = 1;                    }                    next_safe = MAX_PID;                    goto repeat;                }            }            else if (proc->pid > last_pid && next_safe > proc->pid) {                next_safe = proc->pid;            }        }    }    return last_pid;}
+```
