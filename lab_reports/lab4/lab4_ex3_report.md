@@ -14,6 +14,7 @@ proc_run函数进行了进程切换操作，将当前运行进程切换到proc�
 1. 在本实验的执行过程中，创建且运行了几个内核线程？
 
 这里创建且运行了两个内核线程，第一个是idleproc，第二个是initproc。
+
 2. 语句local_intr_save(intr_flag);....local_intr_restore(intr_flag);在这里有何作用?请说明理由
 
 local_intr_save检查flags中的位IF是否为1，即是否进行中断响应，如果之前为1，那么进行中断响应，这里先将中断屏蔽。
