@@ -27,3 +27,27 @@ intdo_fork(uint32_t clone_flags, uintptr_t stack, struct trapframe *tf) {    i
 ```
 static intget_pid(void) {    static_assert(MAX_PID > MAX_PROCESS);    struct proc_struct *proc;    list_entry_t *list = &proc_list, *le;    static int next_safe = MAX_PID, last_pid = MAX_PID;    if (++ last_pid >= MAX_PID) {        last_pid = 1;        goto inside;    }    if (last_pid >= next_safe) {    inside:        next_safe = MAX_PID;    repeat:        le = list;        while ((le = list_next(le)) != list) {            proc = le2proc(le, list_link);            if (proc->pid == last_pid) {                if (++ last_pid >= next_safe) {                    if (last_pid >= MAX_PID) {                        last_pid = 1;                    }                    next_safe = MAX_PID;                    goto repeat;                }            }            else if (proc->pid > last_pid && next_safe > proc->pid) {                next_safe = proc->pid;            }        }    }    return last_pid;}
 ```
+
+观察代码我们可以看出其中有last_pid和next_safe两个标志，下面简记为last和next。
+
+last设置为1，next设置为MAX_PID分别表示进程号序列的两个端点。
+
+下面开始进程列表的遍历，满足以下条件：
+
+- 如果pid == last，那么last++
+- pid在last和next之间，那么将next的值设为pid
+- 如果last＋＋后比next大，那么将next改为MAX_PID，last不变，继续从头开始遍历
+
+从上面的条件中我们可以看出
+
+last是从1开始依次遍历每一个用过的id号直到找到一个没有用过的为止。
+
+但是如果采用“pid == last，那么last++”的判断那么可能需要多次遍历才能得到last的确切值，
+
+所以在这里设置了next，next会对是否再次进行遍历进行约束。
+
+next为遍历过程中比last大的最小的pid值。
+
+如果出现++ last >＝ next，那么说明next取值太小，需要再次进行一遍遍历。
+
+这样下去直到程序退出后，能够确保找到了唯一的id值。
