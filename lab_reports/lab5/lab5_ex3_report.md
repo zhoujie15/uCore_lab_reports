@@ -8,14 +8,19 @@ do_exec的主要工作流程
 do_wait的主要工作流程
 
 do_exit的主要工作流程
+
 1. 如果current->mm != NULL，表示是用户进程，则开始回收此用户进程所占用的用户态虚拟内存空间。
+
 2. 这时，设置当前进程的执行状态current->state=PROC_ZOMBIE，当前进程的退出码current->exit_code=error_code。此时当前进程已经不能被调度了，需要此进程的父进程来做最后的回收工作（即回收描述此进程的内核栈和进程控制块）。
+
 3. 如果当前进程的父进程current->parent处于等待子进程状态：
 
 current->parent->wait_state==WT_CHILD，
 
 则唤醒父进程（即执行“wakup_proc(current->parent)”），让父进程帮助自己完成最后的资源回收。
+
 4. 如果当前进程还有子进程，则需要把这些子进程的父进程指针设置为内核线程initproc，且各个子进程指针需要插入到initproc的子进程链表中。如果某个子进程的执行状态是PROC_ZOMBIE，则需要唤醒initproc来完成对此子进程的最后回收工作。
+
 5. 执行schedule()函数，选择新的进程执行。
 
 ## 思考题
